@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "emp_crud": {
+    "office-portal": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -39,8 +39,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "16kB",
+                  "maximumError": "20kB"
                 }
               ],
               "outputHashing": "all"
@@ -57,10 +57,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "emp_crud:build:production"
+              "buildTarget": "office-portal:build:production"
             },
             "development": {
-              "buildTarget": "emp_crud:build:development"
+              "buildTarget": "office-portal:build:development"
             }
           },
           "defaultConfiguration": "development"
