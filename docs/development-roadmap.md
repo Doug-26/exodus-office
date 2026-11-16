@@ -24,7 +24,7 @@ The plan is to make the employee directory a dependable, data-backed feature, se
 | Area | Current implementation | Consequence for the plan |
 |---|---|---|
 | Frontend | The root app renders `EmployeeCrud`; the route list is empty. The employee component contains the page shell, navigation, metrics, form, table, and styles. | Split the shared workspace layout from routed feature pages before adding more screens. |
-| Employee data | The Angular model and EF entity contain ID, name, mobile, email, city, region, and address. Mobile is a 10-digit string. Email is required in the form but not in the entity. | Add status and hire date in Phase 1 with a migration. Align entity validation with the form. |
+| Employee data | The Angular model and EF entity contain ID, name, mobile, email, city, region, and address. Mobile is stored as `+639XXXXXXXXX`. Email is required in the form but not in the entity. | Add status and hire date in Phase 1 with a migration. Align entity validation with the form. |
 | Employee API | `EmployeeController` exposes get-all, create, update, and delete actions on verb-named routes. It uses synchronous EF Core calls and returns the EF entity directly. A template `WeatherForecastController` is still present. | Introduce DTOs, resource routes, async access, explicit validation, and remove the template controller. |
 | Frontend API calls | The component calls `https://localhost:7269` directly. It reloads the entire list after each mutation and has no loading or request-error state. | Centralize the base URL in an environment file and an employee API service; make loading, empty, validation, and error states part of each feature's acceptance criteria. |
 | Data integrity | The update action copies email, mobile, city, region, and address, but not the employee name. Delete physically removes the row. | Fix the name update and choose the lifecycle policy (soft deactivate by default) before adding status history or reports. |
@@ -52,7 +52,7 @@ The requirement IDs are stable across roadmap revisions. Status describes the re
 | REQ-009 | Overview and reports | Navigation items only; no routes or report API. |
 | REQ-010 | Settings, administrator profile menu, notifications badge, and help center | Visible shell controls only. |
 | REQ-011 | Authenticated, role-controlled workspace access | Inferred from the "Administrator" profile. No sign-in flow or server-side policy exists. |
-| REQ-012 | Consistent product branding and accessible markup | New in this revision. PeopleHub name remains in two places; a row checkbox label contains stray backticks; the table tracks rows by index instead of ID; the "Required fields" note has no matching markers on the labels. |
+| REQ-012 | Consistent product branding and accessible markup | New in this revision. PeopleHub name remains in two places; a row checkbox label contains stray backticks; the table tracks rows by index instead of ID; decorative glyphs are read aloud by screen readers. |
 
 ## Target structure
 
@@ -94,7 +94,7 @@ These replace the earlier "decisions to confirm" list. Change them here when a p
 | Identity | ASP.NET Core Identity with JWT bearer tokens, hosted in the same API. No external identity provider; this keeps the demo free and shows the skill end to end. |
 | Employee status | `Active`, `OnLeave`, `Inactive`. This is employment status; daily attendance status is a separate concept in Phase 6. |
 | Lifecycle | Ordinary departures set `Inactive`. Hard delete is administrator-only and requires explicit confirmation. |
-| Phone format | Philippine mobile number stored as 10 digits (matches the current entity); displayed as `+63 XXX XXX XXXX`. Validate on both form and API. |
+| Phone format | Philippine mobile number stored in E.164 format, `+639XXXXXXXXX` (13 characters), since 2026-11-17. Validate the same pattern on both form and API. |
 | Row subtitle | The employee's department name; "Unassigned" until Phase 4 ships. |
 | Avatar initials | First letters of the first and last word of the employee name, with a color chosen deterministically from the ID. |
 | New this month | Counted from a `HireDate` field, calendar month in Asia/Manila. The trend compares headcount at month end with the previous month end using the hire date and the inactive date. |
@@ -145,11 +145,11 @@ Every phase follows the same loop so the process itself becomes a habit you can 
 **Requirements:** REQ-001, REQ-002.  
 **Depends on:** Phase 0.
 
-**Frontend work:** Complete the list, create/edit form, and row actions. Bind avatar initials, phone display, status badge, nav count, and record count to returned data. Convert the form to reactive forms with field-level validation messages. Replace native alerts and confirms with the shared feedback pattern and a confirm dialog. Add loading, empty, saving, success, and failure states.
+**Frontend work:** Complete the list, create/edit form, and row actions. Bind status badge, and the sidebar employee count to returned data (initials and record count were bound in Phase 0). Convert the form to Signal Forms (`@angular/forms/signals`) with schema validation and field-level messages. Replace the native confirm with an accessible confirm dialog and manage focus in the editor dialog.
 
 **Backend/data work:** Add `Status`, `HireDate`, `InactiveDate`, and `CreatedAt` with a migration. Fix the missing name update. Enforce unique email. Return 404/400/409 with Problem Details. Add a status endpoint for deactivation. Add an xUnit test project with endpoint tests on a test database.
 
-**Skills practiced:** Reactive forms and validators, signal-based state, accessible dialogs; EF Core schema evolution, validation, HTTP semantics, integration testing with `WebApplicationFactory`.
+**Skills practiced:** Signal Forms and schema validation, signal-based state, accessible dialogs; EF Core schema evolution, validation, HTTP semantics, integration testing with `WebApplicationFactory`.
 
 **Portfolio evidence:** PR with before/after screenshots of the form and error states; test counts in the README.
 
@@ -277,7 +277,7 @@ Suggested order of work: 0, 1, 2, 3, 4, 5, 6, 7. Phases 3 and 4 can be swapped o
 
 | Phase | Status | Tag | Notes |
 |---|---|---|---|
-| 0 | Not started | | |
+| 0 | In review (branch `phase-0/foundation`, 2026-11-16) | | Shell, routes, API config, interceptor, toasts; versioned API with DTOs, problem details, migrations, seeding, tests, CI. |
 | 1 | Not started | | |
 | 2 | Not started | | |
 | 3 | Not started | | |

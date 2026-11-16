@@ -1,0 +1,280 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.workspace {
+  min-height: 100vh;
+  background: #f6f7fb;
+}
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 2;
+  display: flex;
+  width: 248px;
+  flex-direction: column;
+  padding: 27px 16px 16px;
+  background: #171a2b;
+  color: #fff;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin: 0 8px 44px;
+  color: #fff;
+  text-decoration: none;
+}
+.brand-mark {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 12px;
+  background: #7c6cf2;
+  font-size: 21px;
+  font-weight: 750;
+}
+.brand-name {
+  font-size: 20px;
+  font-weight: 750;
+  letter-spacing: -0.8px;
+  line-height: 1;
+}
+.brand-name > span {
+  color: #a49af8;
+}
+.brand-name small {
+  display: block;
+  margin-top: 6px;
+  color: #888ca4;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+}
+.nav-caption {
+  margin: 0 12px 12px;
+  color: #9396aa;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 1.15px;
+}
+.sidebar .nav-link {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 12px;
+  padding: 0 12px;
+  border-radius: 9px;
+  color: #b2b5c7;
+  font-size: 13px;
+  font-weight: 550;
+}
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+  background: #292d43;
+  color: #fff;
+}
+.sidebar .nav-link.active {
+  box-shadow: inset 3px 0 #9b8df8;
+}
+.sidebar .nav-link:focus-visible,
+.brand:focus-visible,
+.help-card a:focus-visible {
+  outline: 2px solid #afa4ff;
+  outline-offset: 2px;
+}
+.nav-icon {
+  width: 18px;
+  color: #a6a9bd;
+  font-size: 17px;
+  text-align: center;
+}
+.nav-link.active .nav-icon {
+  color: #afa4ff;
+}
+.sidebar-bottom {
+  margin-top: auto;
+}
+.help-card {
+  margin: 0 2px 20px;
+  padding: 14px;
+  border: 1px solid #34374c;
+  border-radius: 12px;
+  background: #202337;
+}
+.help-icon {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  margin-bottom: 12px;
+  place-items: center;
+  border-radius: 8px;
+  background: #38345d;
+  color: #b7adff;
+  font-weight: 700;
+}
+.help-card strong {
+  font-size: 12px;
+}
+.help-card p {
+  margin: 5px 0 10px;
+  color: #a4a7b8;
+  font-size: 10px;
+  line-height: 1.5;
+}
+.help-card a {
+  color: #afa4ff;
+  font-size: 10px;
+  font-weight: 650;
+  text-decoration: none;
+}
+.help-card a span {
+  margin-left: 4px;
+}
+.profile-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 13px;
+  padding: 15px 2px 2px;
+  border-top: 1px solid #303347;
+}
+.profile-avatar,
+.topbar-avatar {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 50%;
+  background: #e7d6c9;
+  color: #694d3d;
+  font-size: 10px;
+  font-weight: 750;
+}
+.profile-copy {
+  display: grid;
+  gap: 3px;
+}
+.profile-copy strong {
+  font-size: 10px;
+  font-weight: 650;
+}
+.profile-copy small {
+  color: #9da0b3;
+  font-size: 9px;
+}
+.profile-menu {
+  margin-left: auto;
+  color: #a6a9bd;
+  font-size: 21px;
+}
+.main-panel {
+  min-height: 100vh;
+  margin-left: 248px;
+}
+.topbar {
+  display: flex;
+  height: 68px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 42px;
+  border-bottom: 1px solid #eceef3;
+  background: #fff;
+}
+.breadcrumb-label {
+  color: #989bac;
+  font-size: 11px;
+}
+.breadcrumb-label span {
+  padding: 0 9px;
+  color: #c3c5d0;
+}
+.breadcrumb-label strong {
+  color: #34374a;
+  font-weight: 650;
+}
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.icon-button {
+  position: relative;
+  border: 0;
+  background: transparent;
+  color: #676b80;
+  font-size: 20px;
+}
+.icon-button:disabled {
+  color: #b9bcc9;
+  cursor: not-allowed;
+}
+.topbar-avatar {
+  width: 32px;
+  height: 32px;
+  background: #ebe8ff;
+  color: #675bd1;
+}
+.page-content {
+  max-width: 1510px;
+  padding: 37px 42px 20px;
+}
+.page-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 19px 2px 0;
+  color: #a0a2b0;
+  font-size: 9px;
+}
+.page-footer b {
+  color: #e47b8b;
+}
+
+@media (max-width: 1100px) {
+  .sidebar {
+    width: 215px;
+  }
+  .main-panel {
+    margin-left: 215px;
+  }
+  .page-content {
+    padding-right: 25px;
+    padding-left: 25px;
+  }
+  .topbar {
+    padding: 0 25px;
+  }
+}
+
+@media (max-width: 700px) {
+  .sidebar {
+    position: static;
+    width: auto;
+    min-height: auto;
+    padding: 14px 16px;
+  }
+  .brand {
+    margin: 0;
+  }
+  .sidebar > .nav-caption,
+  .sidebar > .nav,
+  .sidebar-bottom {
+    display: none;
+  }
+  .main-panel {
+    margin-left: 0;
+  }
+  .topbar {
+    height: 54px;
+    padding: 0 17px;
+  }
+  .page-content {
+    padding: 25px 16px 16px;
+  }
+  .page-footer {
+    gap: 10px;
+    font-size: 8px;
+  }
+}
