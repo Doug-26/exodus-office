@@ -1,39 +1,43 @@
-using employee.api.Models;
+using employee.api.Data;
+using employee.api.Data.Seeding;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AngularClient", policy =>
-    {
-        policy.WithOrigins("http://localhost:4200")
-            .AllowAnyHeader()
-            .AllowAnyMethod();
-    });
-});
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+builder.Services.AddProblemDetails();
 builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<EmployeeDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("empDbCon")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ExodusOffice")));
+
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("OfficePortal", policy =>
+        policy.WithOrigins(allowedOrigins)
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.UseExceptionHandler();
+app.UseStatusCodePages();
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    await DevelopmentSeeder.RunAsync(app.Services, app.Configuration);
 }
 
 app.UseHttpsRedirection();
-
-app.UseCors("AngularClient");
+app.UseCors("OfficePortal");
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
+
+/// <summary>Exposed so integration tests can host the API with <c>WebApplicationFactory&lt;Program&gt;</c>.</summary>
+public partial class Program;

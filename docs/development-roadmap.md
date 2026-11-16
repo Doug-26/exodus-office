@@ -52,7 +52,7 @@ The requirement IDs are stable across roadmap revisions. Status describes the re
 | REQ-009 | Overview and reports | Navigation items only; no routes or report API. |
 | REQ-010 | Settings, administrator profile menu, notifications badge, and help center | Visible shell controls only. |
 | REQ-011 | Authenticated, role-controlled workspace access | Inferred from the "Administrator" profile. No sign-in flow or server-side policy exists. |
-| REQ-012 | Consistent product branding and accessible markup | New in this revision. PeopleHub name remains in two places; a row checkbox label contains stray backticks; the table tracks rows by index instead of ID; the "Required fields" note has no matching markers on the labels. |
+| REQ-012 | Consistent product branding and accessible markup | New in this revision. PeopleHub name remains in two places; a row checkbox label contains stray backticks; the table tracks rows by index instead of ID; decorative glyphs are read aloud by screen readers. |
 
 ## Target structure
 
@@ -145,11 +145,11 @@ Every phase follows the same loop so the process itself becomes a habit you can 
 **Requirements:** REQ-001, REQ-002.  
 **Depends on:** Phase 0.
 
-**Frontend work:** Complete the list, create/edit form, and row actions. Bind avatar initials, phone display, status badge, nav count, and record count to returned data. Convert the form to reactive forms with field-level validation messages. Replace native alerts and confirms with the shared feedback pattern and a confirm dialog. Add loading, empty, saving, success, and failure states.
+**Frontend work:** Complete the list, create/edit form, and row actions. Bind phone display (formatted `+63 XXX XXX XXXX`), status badge, and the sidebar employee count to returned data (initials and record count were bound in Phase 0). Convert the form to Signal Forms (`@angular/forms/signals`) with schema validation and field-level messages. Replace the native confirm with an accessible confirm dialog and manage focus in the editor dialog.
 
 **Backend/data work:** Add `Status`, `HireDate`, `InactiveDate`, and `CreatedAt` with a migration. Fix the missing name update. Enforce unique email. Return 404/400/409 with Problem Details. Add a status endpoint for deactivation. Add an xUnit test project with endpoint tests on a test database.
 
-**Skills practiced:** Reactive forms and validators, signal-based state, accessible dialogs; EF Core schema evolution, validation, HTTP semantics, integration testing with `WebApplicationFactory`.
+**Skills practiced:** Signal Forms and schema validation, signal-based state, accessible dialogs; EF Core schema evolution, validation, HTTP semantics, integration testing with `WebApplicationFactory`.
 
 **Portfolio evidence:** PR with before/after screenshots of the form and error states; test counts in the README.
 
@@ -277,7 +277,7 @@ Suggested order of work: 0, 1, 2, 3, 4, 5, 6, 7. Phases 3 and 4 can be swapped o
 
 | Phase | Status | Tag | Notes |
 |---|---|---|---|
-| 0 | Not started | | |
+| 0 | In review (branch `phase-0/foundation`, 2026-11-16) | | Shell, routes, API config, interceptor, toasts; versioned API with DTOs, problem details, migrations, seeding, tests, CI. |
 | 1 | Not started | | |
 | 2 | Not started | | |
 | 3 | Not started | | |

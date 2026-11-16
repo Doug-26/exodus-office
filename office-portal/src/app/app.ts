@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { EmployeeCrud } from './employee-crud/employee-crud';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [EmployeeCrud],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+  imports: [RouterOutlet],
+  template: '<router-outlet />',
 })
 export class App {}

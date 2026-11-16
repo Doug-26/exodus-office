@@ -1,0 +1,75 @@
+<div class="workspace">
+  <aside class="sidebar">
+    <a class="brand" routerLink="/" aria-label="Exodus Office home">
+      <span class="brand-mark" aria-hidden="true">EO</span>
+      <span class="brand-name">Exodus<span>Office</span><small>WORKSPACE</small></span>
+    </a>
+
+    <div class="nav-caption" id="workspace-nav-caption">WORKSPACE</div>
+    <nav class="nav flex-column gap-1" aria-labelledby="workspace-nav-caption">
+      @for (item of navItems; track item.path) {
+        <a
+          class="nav-link"
+          [routerLink]="item.path"
+          routerLinkActive="active"
+          ariaCurrentWhenActive="page"
+        >
+          <span class="nav-icon" aria-hidden="true">{{ item.icon }}</span>{{ item.label }}
+        </a>
+      }
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="help-card">
+        <span class="help-icon" aria-hidden="true">?</span><strong>Need a hand?</strong>
+        <p>Visit the help center for tips and guides.</p>
+        <a routerLink="/help">Open help center <span aria-hidden="true">↗</span></a>
+      </div>
+      <a
+        class="nav-link"
+        routerLink="/settings"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+      >
+        <span class="nav-icon" aria-hidden="true">⚙</span>Settings
+      </a>
+      <div class="profile-row">
+        <div class="profile-avatar" aria-hidden="true">{{ currentUser.initials }}</div>
+        <div class="profile-copy">
+          <strong>{{ currentUser.name }}</strong><small>{{ currentUser.role }}</small>
+        </div>
+        <span class="profile-menu" aria-hidden="true">···</span>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-panel">
+    <header class="topbar">
+      <nav class="breadcrumb-label" aria-label="Breadcrumb">
+        Workspace <span aria-hidden="true">/</span> <strong>{{ pageTitle() }}</strong>
+      </nav>
+      <div class="topbar-actions">
+        <button
+          class="icon-button"
+          type="button"
+          aria-label="Notifications are not available yet"
+          disabled
+        >
+          <span aria-hidden="true">♧</span>
+        </button>
+        <div class="topbar-avatar" aria-hidden="true">{{ currentUser.initials }}</div>
+      </div>
+    </header>
+
+    <div class="page-content container-fluid">
+      <router-outlet />
+
+      <footer class="page-footer">
+        <span>© {{ year }} Exodus Office</span>
+        <span>Made for teams that care about people <b aria-hidden="true">♥</b></span>
+      </footer>
+    </div>
+  </main>
+
+  <app-toast-stack />
+</div>

@@ -1,0 +1,353 @@
+<section class="welcome-row">
+  <div>
+    <div class="eyebrow">PEOPLE DIRECTORY</div>
+    <h1>Employees</h1>
+    <p class="page-subtitle">Manage your people, all in one place.</p>
+  </div>
+  <button class="btn btn-primary add-button" type="button" (click)="openCreateEditor()">
+    <span aria-hidden="true">＋</span> Add employee
+  </button>
+</section>
+
+<!-- Summary values are sample data until the summary API ships in Phase 5. -->
+<section class="stats-grid" aria-label="Employee summary (sample values)">
+  <article class="stat-card">
+    <div class="stat-top">
+      <span>Total employees</span><span class="stat-icon violet" aria-hidden="true">♙</span>
+    </div>
+    <div class="stat-value">24</div>
+    <div class="stat-note"><span class="trend-up">↗ 8.2%</span> <span>vs. last month</span></div>
+  </article>
+  <article class="stat-card">
+    <div class="stat-top">
+      <span>Active employees</span><span class="stat-icon green" aria-hidden="true">✓</span>
+    </div>
+    <div class="stat-value">21</div>
+    <div class="stat-note"><span class="status-dot"></span> 87.5% of your team</div>
+  </article>
+  <article class="stat-card">
+    <div class="stat-top">
+      <span>Departments</span><span class="stat-icon blue" aria-hidden="true">▦</span>
+    </div>
+    <div class="stat-value">6</div>
+    <div class="stat-note">Across your organization</div>
+  </article>
+  <article class="stat-card">
+    <div class="stat-top">
+      <span>New this month</span><span class="stat-icon amber" aria-hidden="true">✦</span>
+    </div>
+    <div class="stat-value">3</div>
+    <div class="stat-note">Welcome to the team!</div>
+  </article>
+</section>
+
+@if (isEditorOpen()) {
+  <div
+    class="modal show d-block employee-modal"
+    tabindex="-1"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="employee-editor-title"
+    (click)="closeEditor()"
+    (keydown.escape)="closeEditor()"
+  >
+    <div
+      class="modal-dialog modal-dialog-centered modal-lg"
+      role="document"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="modal-content employee-modal-content">
+        <div class="modal-header employee-modal-header">
+          <div class="create-employee-heading">
+            <div class="create-employee-symbol" aria-hidden="true">
+              {{ isEditMode() ? '✎' : '＋' }}
+            </div>
+            <div>
+              <h2 class="modal-title" id="employee-editor-title">
+                {{ isEditMode() ? 'Edit employee' : 'Create employee' }}
+              </h2>
+              <p>
+                {{
+                  isEditMode()
+                    ? 'Update this employee’s information.'
+                    : 'Enter the employee’s details to add them to your directory.'
+                }}
+              </p>
+            </div>
+          </div>
+          <button class="modal-close" type="button" aria-label="Close" (click)="closeEditor()">
+            &times;
+          </button>
+        </div>
+
+        <form class="employee-form" (ngSubmit)="submitEditor()">
+          <div class="modal-body employee-modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label" for="empName">Full name</label>
+                <input
+                  class="form-control"
+                  id="empName"
+                  name="name"
+                  type="text"
+                  [(ngModel)]="draft.name"
+                  placeholder="e.g. Christian Jay De La Cruz"
+                  autocomplete="name"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="empMobile">Mobile number</label>
+                <input
+                  class="form-control"
+                  id="empMobile"
+                  name="mobile"
+                  type="tel"
+                  inputmode="numeric"
+                  [(ngModel)]="draft.mobile"
+                  placeholder="10 digits, e.g. 9171234567"
+                  pattern="9[0-9]{9}"
+                  title="10 digits starting with 9, without +63"
+                  autocomplete="tel-national"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="empEmail">Email address</label>
+                <input
+                  class="form-control"
+                  id="empEmail"
+                  name="email"
+                  type="email"
+                  [(ngModel)]="draft.email"
+                  placeholder="name@example.com"
+                  autocomplete="email"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="city">City</label>
+                <input
+                  class="form-control"
+                  id="city"
+                  name="city"
+                  type="text"
+                  [(ngModel)]="draft.city"
+                  placeholder="e.g. Naga"
+                  autocomplete="address-level2"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="region">Region</label>
+                <input
+                  class="form-control"
+                  id="region"
+                  name="region"
+                  type="text"
+                  [(ngModel)]="draft.region"
+                  placeholder="e.g. Bicol"
+                  autocomplete="address-level1"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="address">Address</label>
+                <input
+                  class="form-control"
+                  id="address"
+                  name="address"
+                  type="text"
+                  [(ngModel)]="draft.address"
+                  placeholder="Street, barangay, or neighborhood"
+                  autocomplete="street-address"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer employee-form-footer">
+            <span
+              ><span class="required-marker" aria-hidden="true">*</span> All fields are
+              required</span
+            >
+            <div class="employee-form-actions">
+              <button
+                class="btn btn-light cancel-button"
+                type="button"
+                (click)="closeEditor()"
+                [disabled]="isSaving()"
+              >
+                Cancel
+              </button>
+              <button class="btn btn-primary save-button" type="submit" [disabled]="isSaving()">
+                {{ isSaving() ? 'Saving…' : isEditMode() ? 'Update employee' : 'Save employee' }}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+}
+
+<section class="directory-card">
+  <div class="directory-heading">
+    <div>
+      <h2>
+        All employees <span class="record-count">{{ recordCount() }}</span>
+      </h2>
+      <p>A complete list of everyone on your team.</p>
+    </div>
+    <!-- Export, search, filter, sort, selection, and paging become functional in Phase 3. -->
+    <button class="btn btn-outline-secondary export-button" type="button" disabled>
+      <span aria-hidden="true">↓</span> Export
+    </button>
+  </div>
+
+  <div class="toolbar">
+    <label class="search-box">
+      <span aria-hidden="true">⌕</span>
+      <input
+        class="form-control"
+        type="search"
+        placeholder="Search by name, email, or ID"
+        aria-label="Search employees"
+        disabled
+      />
+    </label>
+    <button class="btn btn-light filter-button" type="button" disabled>
+      <span aria-hidden="true">☷</span> Filter
+      <span class="filter-caret" aria-hidden="true">⌄</span>
+    </button>
+    <button class="btn btn-light sort-button" type="button" disabled>
+      <span aria-hidden="true">↕</span> Sort by: <strong>Name</strong>
+      <span class="filter-caret" aria-hidden="true">⌄</span>
+    </button>
+  </div>
+
+  <div class="table-responsive employee-table-wrap">
+    <table class="table employee-table align-middle mb-0">
+      <thead>
+        <tr>
+          <th scope="col">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              aria-label="Select all employees"
+              disabled
+            />
+          </th>
+          <th scope="col">EMPLOYEE</th>
+          <th scope="col">EMPLOYEE ID</th>
+          <th scope="col">CONTACT</th>
+          <th scope="col">LOCATION</th>
+          <th scope="col">STATUS</th>
+          <th scope="col"><span class="visually-hidden">Actions</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (isLoading()) {
+          <tr>
+            <td class="table-state" colspan="7" role="status">Loading employees…</td>
+          </tr>
+        } @else if (loadError(); as message) {
+          <tr>
+            <td class="table-state table-state-error" colspan="7">
+              <p role="alert">{{ message }}</p>
+              <button class="btn btn-light retry-button" type="button" (click)="loadEmployees()">
+                Try again
+              </button>
+            </td>
+          </tr>
+        } @else if (employees().length === 0) {
+          <tr>
+            <td class="table-state" colspan="7">
+              No employees yet. Add the first one to start your directory.
+            </td>
+          </tr>
+        } @else {
+          @for (employee of employees(); track employee.id) {
+            <tr>
+              <td>
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  [attr.aria-label]="'Select ' + employee.name"
+                  disabled
+                />
+              </td>
+              <td>
+                <div class="employee-cell">
+                  <div class="employee-avatar avatar-purple" aria-hidden="true">
+                    {{ initialsOf(employee.name) }}
+                  </div>
+                  <div>
+                    <strong>{{ employee.name }}</strong><small>Unassigned</small>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <span class="id-pill">#{{ employee.id }}</span>
+              </td>
+              <td>
+                <div class="contact-cell">
+                  <span>{{ employee.email }}</span><small>{{ employee.mobile }}</small>
+                </div>
+              </td>
+              <td>
+                <div class="location-cell">
+                  <strong>{{ employee.city }}, {{ employee.region }}</strong
+                  ><small>{{ employee.address }}</small>
+                </div>
+              </td>
+              <td><span class="badge status-badge">Active</span></td>
+              <td>
+                <div class="employee-actions" (click)="$event.stopPropagation()">
+                  <button
+                    class="row-menu"
+                    type="button"
+                    [attr.aria-label]="'More actions for ' + employee.name"
+                    [attr.aria-expanded]="openMenuEmployeeId() === employee.id"
+                    (click)="toggleActionsMenu(employee.id)"
+                  >
+                    ···
+                  </button>
+                  @if (openMenuEmployeeId() === employee.id) {
+                    <div class="employee-actions-menu" role="menu">
+                      <button type="button" role="menuitem" (click)="openEditEditor(employee)">
+                        <span class="action-icon edit-icon" aria-hidden="true">✎</span> Edit
+                        employee
+                      </button>
+                      <button
+                        type="button"
+                        role="menuitem"
+                        class="delete-action"
+                        (click)="deleteEmployee(employee)"
+                      >
+                        <span class="action-icon" aria-hidden="true">⌫</span> Delete employee
+                      </button>
+                    </div>
+                  }
+                </div>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <footer class="table-footer">
+    <span
+      >Showing <strong>{{ recordCount() }}</strong> of
+      <strong>{{ recordCount() }}</strong> employees</span
+    >
+    <nav aria-label="Employee list pages">
+      <button class="pagination-btn" type="button" aria-label="Previous page" disabled>‹</button>
+      <button class="pagination-btn current" type="button" aria-current="page">1</button>
+      <button class="pagination-btn" type="button" aria-label="Next page" disabled>›</button>
+    </nav>
+  </footer>
+</section>
