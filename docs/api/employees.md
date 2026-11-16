@@ -9,7 +9,7 @@
 |---|---|---|
 | `id` | integer | Server-generated. Read-only. |
 | `name` | string | Required, 2–100 characters, trimmed. |
-| `mobile` | string | Required. Philippine mobile: exactly 10 digits starting with 9, no `+63`. Example `9171234567`. The UI formats it as `+63 917 123 4567`. |
+| `mobile` | string | Required. Philippine mobile in E.164 format: `+63` followed by 10 digits starting with 9, no spaces (13 characters). Example `+639171234567`. |
 | `email` | string | Required, valid email, up to 254 characters, stored lower-case, unique across employees. |
 | `city` | string | Required, up to 100 characters. |
 | `region` | string | Required, up to 100 characters. |
@@ -23,7 +23,7 @@ Example response body:
 {
   "id": 1,
   "name": "Maria Santos",
-  "mobile": "9171234567",
+  "mobile": "+639171234567",
   "email": "maria.santos@example.com",
   "city": "Naga",
   "region": "Bicol",
@@ -55,7 +55,7 @@ Validation failure (`400`):
   "title": "One or more validation errors occurred.",
   "status": 400,
   "errors": {
-    "Mobile": ["Mobile must be 10 digits starting with 9, for example 9171234567."],
+    "Mobile": ["Mobile must start with +63 followed by 10 digits beginning with 9, for example +639171234567."],
     "Email": ["The Email field is not a valid e-mail address."]
   }
 }

@@ -59,7 +59,7 @@ public sealed record UpdateEmployeeRequest
 
 public static class EmployeeValidation
 {
-    /// <summary>Philippine mobile number: 10 digits starting with 9, without the +63 prefix.</summary>
-    public const string MobilePattern = "^9[0-9]{9}$";
-    public const string MobileMessage = "Mobile must be 10 digits starting with 9, for example 9171234567.";
+    /// <summary>Philippine mobile number in E.164 format: +63, then 10 digits starting with 9.</summary>
+    public const string MobilePattern = @"^\+639[0-9]{9}$";
+    public const string MobileMessage = "Mobile must start with +63 followed by 10 digits beginning with 9, for example +639171234567.";
 }

@@ -28,7 +28,8 @@ public class EmployeeDbContext(DbContextOptions<EmployeeDbContext> options) : Db
 public static class EmployeeLimits
 {
     public const int NameMaxLength = 100;
-    public const int MobileLength = 10;
+    /// <summary>E.164 Philippine mobile: "+63" followed by 10 digits, e.g. +639171234567.</summary>
+    public const int MobileLength = 13;
     public const int EmailMaxLength = 254;
     public const int CityMaxLength = 100;
     public const int RegionMaxLength = 100;

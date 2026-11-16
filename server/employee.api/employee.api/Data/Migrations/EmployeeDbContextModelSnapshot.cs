@@ -46,8 +46,8 @@ namespace employee.api.Data.Migrations
 
                     b.Property<string>("Mobile")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nchar(10)")
+                        .HasMaxLength(13)
+                        .HasColumnType("nchar(13)")
                         .IsFixedLength();
 
                     b.Property<string>("Name")

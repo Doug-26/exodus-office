@@ -2,7 +2,7 @@
 export interface Employee {
   id: number;
   name: string;
-  /** 10-digit Philippine mobile number without the +63 prefix. */
+  /** Philippine mobile number in E.164 format, e.g. +639171234567. */
   mobile: string;
   email: string;
   city: string;
@@ -14,7 +14,7 @@ export interface Employee {
 export type EmployeeInput = Omit<Employee, 'id'>;
 
 export function emptyEmployeeInput(): EmployeeInput {
-  return { name: '', mobile: '', email: '', city: '', region: '', address: '' };
+  return { name: '', mobile: '+63', email: '', city: '', region: '', address: '' };
 }
 
 /** First letters of the first and last word of a name, for avatar badges. */

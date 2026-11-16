@@ -14,12 +14,15 @@ public class CreateEmployeeRequestValidationTests
     }
 
     [Theory]
-    [InlineData("0917123456")]
-    [InlineData("917123456")]
-    [InlineData("91712345678")]
-    [InlineData("+639171234567")]
-    [InlineData("abcdefghij")]
-    public void Mobile_must_be_ten_digits_starting_with_nine(string mobile)
+    [InlineData("9171234567")]
+    [InlineData("09171234567")]
+    [InlineData("639171234567")]
+    [InlineData("+63917123456")]
+    [InlineData("+6391712345678")]
+    [InlineData("+638171234567")]
+    [InlineData("+63 917 123 4567")]
+    [InlineData("+1abcdefghij")]
+    public void Mobile_must_be_plus_63_then_ten_digits_starting_with_nine(string mobile)
     {
         var errors = Validate(ValidRequest() with { Mobile = mobile });
 
@@ -50,7 +53,7 @@ public class CreateEmployeeRequestValidationTests
     private static CreateEmployeeRequest ValidRequest() => new()
     {
         Name = "Maria Santos",
-        Mobile = "9171234567",
+        Mobile = "+639171234567",
         Email = "maria.santos@example.com",
         City = "Naga",
         Region = "Bicol",

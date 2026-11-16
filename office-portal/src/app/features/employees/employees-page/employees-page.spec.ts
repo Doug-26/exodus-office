@@ -13,7 +13,7 @@ const sampleEmployees: Employee[] = [
   {
     id: 1,
     name: 'Maria Santos',
-    mobile: '9171234567',
+    mobile: '+639171234567',
     email: 'maria@example.com',
     city: 'Naga',
     region: 'Bicol',
@@ -22,7 +22,7 @@ const sampleEmployees: Employee[] = [
   {
     id: 2,
     name: 'Miguel Reyes',
-    mobile: '9057721408',
+    mobile: '+639057721408',
     email: 'miguel@example.com',
     city: 'Iriga',
     region: 'Bicol',
@@ -65,7 +65,7 @@ describe('EmployeesPage', () => {
     const rows = element.querySelectorAll('tbody tr');
     expect(rows.length).toBe(2);
     expect(rows[0].querySelector('.employee-avatar')?.textContent?.trim()).toBe('MS');
-    expect(rows[0].querySelector('.contact-cell small')?.textContent?.trim()).toBe('9171234567');
+    expect(rows[0].querySelector('.contact-cell small')?.textContent?.trim()).toBe('+639171234567');
     expect(element.querySelector('.record-count')?.textContent?.trim()).toBe('2');
   });
 
@@ -131,20 +131,18 @@ describe('EmployeesPage', () => {
     );
     await fixture.whenStable();
 
-    http
-      .expectOne({ method: 'POST', url: EMPLOYEES_URL })
-      .flush(
-        {
-          title: 'One or more validation errors occurred.',
-          status: 400,
-          errors: { Mobile: ['Mobile must be 10 digits starting with 9.'] },
-        },
-        { status: 400, statusText: 'Bad Request' },
-      );
+    http.expectOne({ method: 'POST', url: EMPLOYEES_URL }).flush(
+      {
+        title: 'One or more validation errors occurred.',
+        status: 400,
+        errors: { Mobile: ['Mobile must start with +63 followed by 10 digits beginning with 9.'] },
+      },
+      { status: 400, statusText: 'Bad Request' },
+    );
     await fixture.whenStable();
 
     expect(notifications.toasts()[0].kind).toBe('error');
-    expect(notifications.toasts()[0].message).toContain('Mobile must be 10 digits');
+    expect(notifications.toasts()[0].message).toContain('Mobile must start with +63');
     expect(element.querySelector('#employee-editor-title')).not.toBeNull();
   });
 });

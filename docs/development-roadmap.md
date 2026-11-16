@@ -24,7 +24,7 @@ The plan is to make the employee directory a dependable, data-backed feature, se
 | Area | Current implementation | Consequence for the plan |
 |---|---|---|
 | Frontend | The root app renders `EmployeeCrud`; the route list is empty. The employee component contains the page shell, navigation, metrics, form, table, and styles. | Split the shared workspace layout from routed feature pages before adding more screens. |
-| Employee data | The Angular model and EF entity contain ID, name, mobile, email, city, region, and address. Mobile is a 10-digit string. Email is required in the form but not in the entity. | Add status and hire date in Phase 1 with a migration. Align entity validation with the form. |
+| Employee data | The Angular model and EF entity contain ID, name, mobile, email, city, region, and address. Mobile is stored as `+639XXXXXXXXX`. Email is required in the form but not in the entity. | Add status and hire date in Phase 1 with a migration. Align entity validation with the form. |
 | Employee API | `EmployeeController` exposes get-all, create, update, and delete actions on verb-named routes. It uses synchronous EF Core calls and returns the EF entity directly. A template `WeatherForecastController` is still present. | Introduce DTOs, resource routes, async access, explicit validation, and remove the template controller. |
 | Frontend API calls | The component calls `https://localhost:7269` directly. It reloads the entire list after each mutation and has no loading or request-error state. | Centralize the base URL in an environment file and an employee API service; make loading, empty, validation, and error states part of each feature's acceptance criteria. |
 | Data integrity | The update action copies email, mobile, city, region, and address, but not the employee name. Delete physically removes the row. | Fix the name update and choose the lifecycle policy (soft deactivate by default) before adding status history or reports. |
@@ -94,7 +94,7 @@ These replace the earlier "decisions to confirm" list. Change them here when a p
 | Identity | ASP.NET Core Identity with JWT bearer tokens, hosted in the same API. No external identity provider; this keeps the demo free and shows the skill end to end. |
 | Employee status | `Active`, `OnLeave`, `Inactive`. This is employment status; daily attendance status is a separate concept in Phase 6. |
 | Lifecycle | Ordinary departures set `Inactive`. Hard delete is administrator-only and requires explicit confirmation. |
-| Phone format | Philippine mobile number stored as 10 digits (matches the current entity); displayed as `+63 XXX XXX XXXX`. Validate on both form and API. |
+| Phone format | Philippine mobile number stored in E.164 format, `+639XXXXXXXXX` (13 characters), since 2026-11-17. Validate the same pattern on both form and API. |
 | Row subtitle | The employee's department name; "Unassigned" until Phase 4 ships. |
 | Avatar initials | First letters of the first and last word of the employee name, with a color chosen deterministically from the ID. |
 | New this month | Counted from a `HireDate` field, calendar month in Asia/Manila. The trend compares headcount at month end with the previous month end using the hire date and the inactive date. |
@@ -145,7 +145,7 @@ Every phase follows the same loop so the process itself becomes a habit you can 
 **Requirements:** REQ-001, REQ-002.  
 **Depends on:** Phase 0.
 
-**Frontend work:** Complete the list, create/edit form, and row actions. Bind phone display (formatted `+63 XXX XXX XXXX`), status badge, and the sidebar employee count to returned data (initials and record count were bound in Phase 0). Convert the form to Signal Forms (`@angular/forms/signals`) with schema validation and field-level messages. Replace the native confirm with an accessible confirm dialog and manage focus in the editor dialog.
+**Frontend work:** Complete the list, create/edit form, and row actions. Bind status badge, and the sidebar employee count to returned data (initials and record count were bound in Phase 0). Convert the form to Signal Forms (`@angular/forms/signals`) with schema validation and field-level messages. Replace the native confirm with an accessible confirm dialog and manage focus in the editor dialog.
 
 **Backend/data work:** Add `Status`, `HireDate`, `InactiveDate`, and `CreatedAt` with a migration. Fix the missing name update. Enforce unique email. Return 404/400/409 with Problem Details. Add a status endpoint for deactivation. Add an xUnit test project with endpoint tests on a test database.
 

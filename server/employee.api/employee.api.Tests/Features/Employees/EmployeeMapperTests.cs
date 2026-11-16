@@ -12,7 +12,7 @@ public class EmployeeMapperTests
         var request = new CreateEmployeeRequest
         {
             Name = "  Maria Santos ",
-            Mobile = " 9171234567 ",
+            Mobile = " +639171234567 ",
             Email = " Maria.Santos@Example.com ",
             City = " Naga ",
             Region = " Bicol ",
@@ -22,7 +22,7 @@ public class EmployeeMapperTests
         var entity = request.ToEntity();
 
         Assert.Equal("Maria Santos", entity.Name);
-        Assert.Equal("9171234567", entity.Mobile);
+        Assert.Equal("+639171234567", entity.Mobile);
         Assert.Equal("maria.santos@example.com", entity.Email);
         Assert.Equal("Naga", entity.City);
         Assert.Equal("Bicol", entity.Region);
@@ -36,7 +36,7 @@ public class EmployeeMapperTests
         {
             Id = 7,
             Name = "Old Name",
-            Mobile = "9000000000",
+            Mobile = "+639000000000",
             Email = "old@example.com",
             City = "Old City",
             Region = "Old Region",
@@ -45,7 +45,7 @@ public class EmployeeMapperTests
         var request = new UpdateEmployeeRequest
         {
             Name = "New Name",
-            Mobile = "9111111111",
+            Mobile = "+639111111111",
             Email = "new@example.com",
             City = "New City",
             Region = "New Region",
@@ -56,7 +56,7 @@ public class EmployeeMapperTests
 
         Assert.Equal(7, entity.Id);
         Assert.Equal("New Name", entity.Name);
-        Assert.Equal("9111111111", entity.Mobile);
+        Assert.Equal("+639111111111", entity.Mobile);
         Assert.Equal("new@example.com", entity.Email);
         Assert.Equal("New City", entity.City);
         Assert.Equal("New Region", entity.Region);
@@ -70,7 +70,7 @@ public class EmployeeMapperTests
         {
             Id = 3,
             Name = "Maria Santos",
-            Mobile = "9171234567",
+            Mobile = "+639171234567",
             Email = "maria.santos@example.com",
             City = "Naga",
             Region = "Bicol",
@@ -79,6 +79,6 @@ public class EmployeeMapperTests
 
         var response = entity.ToResponse();
 
-        Assert.Equal(new EmployeeResponse(3, "Maria Santos", "9171234567", "maria.santos@example.com", "Naga", "Bicol", "Concepcion Pequeña"), response);
+        Assert.Equal(new EmployeeResponse(3, "Maria Santos", "+639171234567", "maria.santos@example.com", "Naga", "Bicol", "Concepcion Pequeña"), response);
     }
 }

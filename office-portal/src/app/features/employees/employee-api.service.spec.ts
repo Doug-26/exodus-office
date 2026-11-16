@@ -11,7 +11,7 @@ describe('EmployeeApiService', () => {
 
   const input: EmployeeInput = {
     name: 'Maria Santos',
-    mobile: '9171234567',
+    mobile: '+639171234567',
     email: 'maria@example.com',
     city: 'Naga',
     region: 'Bicol',

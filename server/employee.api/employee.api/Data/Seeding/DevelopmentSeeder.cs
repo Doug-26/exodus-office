@@ -28,11 +28,11 @@ public static class DevelopmentSeeder
 
     public static IReadOnlyList<Employee> TeamMembers() =>
     [
-        Member("Christian Jay De La Cruz", "christian.delacruz", "9000000001"),
-        Member("Jovy Jay De La Cruz", "jovy.delacruz", "9000000002"),
-        Member("Team Member Three", "member.three", "9000000003"),
-        Member("Team Member Four", "member.four", "9000000004"),
-        Member("Team Member Five", "member.five", "9000000005"),
+        Member("Christian Jay De La Cruz", "christian.delacruz", "+639000000001"),
+        Member("Jovy Jay De La Cruz", "jovy.delacruz", "+639000000002"),
+        Member("Team Member Three", "member.three", "+639000000003"),
+        Member("Team Member Four", "member.four", "+639000000004"),
+        Member("Team Member Five", "member.five", "+639000000005"),
     ];
 
     private static Employee Member(string name, string mailbox, string mobile) => new()

@@ -10,7 +10,7 @@ public class Employee
 
     public required string Name { get; set; }
 
-    /// <summary>Philippine mobile number stored as 10 digits without the country code, e.g. 9171234567.</summary>
+    /// <summary>Philippine mobile number in E.164 format: "+63" followed by 10 digits, e.g. +639171234567.</summary>
     public required string Mobile { get; set; }
 
     public required string Email { get; set; }
